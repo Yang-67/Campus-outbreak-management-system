@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50519
 File Encoding         : 65001
 
-Date: 2022-04-30 23:12:40
+Date: 2022-05-01 10:55:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -108,7 +108,7 @@ CREATE TABLE `report_info` (
 -- ----------------------------
 DROP TABLE IF EXISTS `user_info`;
 CREATE TABLE `user_info` (
-  `user_id` int(11) NOT NULL COMMENT '学号或工号',
+  `user_id` varchar(20) NOT NULL COMMENT '学号或工号',
   `user_name` varchar(255) NOT NULL COMMENT '用户名',
   `user_pwd` varchar(255) NOT NULL COMMENT '密码',
   `user_sex` tinyint(4) NOT NULL DEFAULT '1' COMMENT '性别1男0女',

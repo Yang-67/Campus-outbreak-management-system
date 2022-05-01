@@ -29,7 +29,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if(one != null){
             BeanUtil.copyProperties(one,user,true);
             String token = TokenUtils.genToken(one.getUserId(),one.getUserPwd());
-            UserDto userDto = new UserDto(one.getUserId(),one.getUserUrl(), one.getIdentity(),token);
+            UserDto userDto = new UserDto(one.getUserId(),one.getUserName(),one.getUserUrl(), one.getIdentity(),token);
             BeanUtil.copyProperties(one,userDto,true);
             return userDto;
         }else {

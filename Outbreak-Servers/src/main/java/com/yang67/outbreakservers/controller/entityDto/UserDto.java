@@ -2,6 +2,7 @@ package com.yang67.outbreakservers.controller.entityDto;
 
 public class UserDto {
     private String userId;
+    private String userName;
     private String userUrl;
     private int identity;
     private String token;
@@ -9,8 +10,9 @@ public class UserDto {
     public UserDto() {
     }
 
-    public UserDto(String userId, String userUrl, int identity, String token) {
+    public UserDto(String userId, String userName, String userUrl, int identity, String token) {
         this.userId = userId;
+        this.userName = userName;
         this.userUrl = userUrl;
         this.identity = identity;
         this.token = token;
@@ -22,6 +24,14 @@ public class UserDto {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getUserUrl() {
