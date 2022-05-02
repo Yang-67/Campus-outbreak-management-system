@@ -48,19 +48,39 @@ export const insertHealthInfo =(param)=>{
 	})
 }
 //学生查询每日健康记录
-export const getDayHealthInfo =(userId)=>{
+export const getDayHealthInfo =(userId,pageNum,pageSize,inputStr,datetime1,datetime2)=>{
 	return axios.request({
 		url:'http://localhost:8081/health/getDayHealthInfo',
 		method:'get',
-		params:{userId:userId}
+		params:{userId:userId,pageNum:pageNum,pageSize:pageSize,location:inputStr,datetime1:datetime1,datetime2:datetime2}
 	})
 }
-//根据学号获取学生健康信息条数
-export const getHealthNumByUserId =(userId)=>{
+// 图表1
+export const members1 =()=>{
 	return axios.request({
-		url:'http://localhost:8081/health/getHealthNumByUserId',
+		url:'http://localhost:8081/health/members1',
 		method:'get',
-		params:{userId:userId}
 	})
 }
-
+// 图表2
+export const members2 =()=>{
+	return axios.request({
+		url:'http://localhost:8081/health/members2',
+		method:'get',
+	})
+}
+// 查询面向全体学生的通知
+export const getStudentInfo =()=>{
+	return axios.request({
+		url:'http://localhost:8081/inform/getStudentInfo',
+		method:'get',
+	})
+}
+//根据健康信息的id删除
+export const deleteInfoByHealthId =(healthId)=>{
+	return axios.request({
+		url:'http://localhost:8081/health/deleteInfoByHealthId',
+		method:'get',
+		params:{healthId:healthId}
+	})
+}

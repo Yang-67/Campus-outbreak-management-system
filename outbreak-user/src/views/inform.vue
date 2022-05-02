@@ -53,8 +53,8 @@
           :page-size="pageSize"
           :total="total"
           :page-sizes="[5, 10, 15, 20]"
-          @current-change="sarchData"
           @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
         ></el-pagination>
       </div>
       <!-- 内容详情 -->
@@ -119,10 +119,12 @@ export default {
       this.pageNum = 1;
       this.sarchData();
     },
-    // 更改显示数量
-    handleSizeChange(value) {
-      this.pageSize = value;
-      this.pageNum = 1;
+      handleSizeChange(pageSize) {
+      this.pageSize = pageSize;
+      this.sarchData();
+    },
+    handleCurrentChange(pageNum) {
+      this.pageNum = pageNum;
       this.sarchData();
     },
     handleLook(index, rows) {

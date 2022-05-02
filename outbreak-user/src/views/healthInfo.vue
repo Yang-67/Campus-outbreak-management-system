@@ -31,6 +31,7 @@
         </el-form-item>
         <el-form-item label="疫苗针次" prop="vaccineNum">
           <el-radio-group v-model="ruleForm.vaccineNum">
+            <el-radio label="0"></el-radio>
             <el-radio label="1"></el-radio>
             <el-radio label="2"></el-radio>
             <el-radio label="3"></el-radio>
@@ -71,7 +72,7 @@ export default {
         temperature: "",
         location: "",
         route: "",
-        deleteFlag:1
+        deleteFlag: 1,
       },
       rules: {
         temperature: [
@@ -103,29 +104,29 @@ export default {
           } else {
             this.ruleForm.healthState = 2;
           }
-          if (this.ruleForm.vaccineNum == "1") {
-            this.ruleForm.vaccineNum = 1;
-          } else if (this.ruleForm.vaccineNum == "2") {
-            this.ruleForm.vaccineNum = 2;
-          } else {
-            this.ruleForm.vaccineNum = 3;
-          }
-          (this.ruleForm.userId = JSON.parse(
+          // if (this.ruleForm.vaccineNum == "1") {
+          //   this.ruleForm.vaccineNum = 1;
+          // } else if (this.ruleForm.vaccineNum == "2") {
+          //   this.ruleForm.vaccineNum = 2;
+          // } else {
+          //   this.ruleForm.vaccineNum = 3;
+          // }
+          this.ruleForm.userId = JSON.parse(
             localStorage.getItem("data")
-          ).userId),
-            insertHealthInfo(this.ruleForm).then(({ data: res }) => {
-              if (res.code == 200) {
-                this.$message({
-                  type: "success",
-                  message: "提交成功",
-                });
-              } else {
-                this.$message({
-                  type: "error",
-                  message: "提交失败",
-                });
-              }
-            });
+          ).userId;
+          insertHealthInfo(this.ruleForm).then(({ data: res }) => {
+            if (res.code == 200) {
+              this.$message({
+                type: "success",
+                message: "提交成功",
+              });
+            } else {
+              this.$message({
+                type: "error",
+                message: "提交失败",
+              });
+            }
+          });
         }
       });
     },

@@ -13,7 +13,7 @@
       <div style="width: 1250px">
         <el-input
           style="width: 300px"
-          placeholder="按姓名查找"
+          placeholder="按定位查找"
           type="text"
           v-model="inputStr"
           class="input-with-select"
@@ -36,35 +36,36 @@
         <el-button icon="el-icon-refresh" @click="refresh">重置</el-button>
       </div>
       <!-- 记录列表 -->
-      <el-table
-        :data="
-          tableData.slice(
-            (this.currentPage2 - 1) * pageSize,
-            this.currentPage2 * pageSize
-          )
-        "
-        style="width: 100%"
-        ref="tableDate"
-      >
+      <el-table :data="tableData" style="width: 100%" ref="tableDate">
         <el-table-column type="expand">
           <template slot-scope="props">
             <el-form label-position="left" inline class="demo-table-expand">
-              <el-form-item label="今日行程" prop="route">
+              <el-form-item label="今日行程">
+                <el-input
+                  type="textarea"
+                  readonly
+                  autosize
+                  v-model="props.row.route"
+                ></el-input>
               </el-form-item>
             </el-form>
           </template>
         </el-table-column>
         <el-table-column label="序号" type="index" width="80"></el-table-column>
-        <el-table-column label="健康状态" prop="healthState" >
+        <el-table-column label="健康状态" prop="healthState">
+          <template slot-scope="scope">
+            <p v-if="scope.row.healthState == 0">健康</p>
+            <p v-if="scope.row.healthState == 1">咳嗽、发烧等</p>
+            <p v-if="scope.row.healthState == 2">其他</p>
+          </template>
         </el-table-column>
-        <el-table-column label="接种疫苗数" prop="vaccineNum">
-        </el-table-column>
-        <el-table-column label="体温" prop="temperature">
-        </el-table-column>
-        <el-table-column label="提交时间" prop="createTime">
-        </el-table-column>
-        <el-table-column label="定位" prop="location">
-        </el-table-column>
+        <el-table-column
+          label="接种疫苗数(针)"
+          prop="vaccineNum"
+        ></el-table-column>
+        <el-table-column label="体温(℃)" prop="temperature"> </el-table-column>
+        <el-table-column label="提交时间" prop="createTime"> </el-table-column>
+        <el-table-column label="定位" prop="location"> </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button
@@ -74,41 +75,46 @@
               @click="handleEdit(scope.$index + 1, scope.row)"
               >编辑</el-button
             >
+            <el-button
+              size="small"
+              type="danger"
+              icon="el-icon-delete"
+              @click="handleDelete(scope.$index, tableData)"
+            >
+              删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
-      <!-- 分页 -->
-      <div class="block">
+      <!-- 页码 -->
+      <div style="width: 50%; margin: 0 auto">
         <el-pagination
+          background
+          layout="sizes, prev, pager, next"
+          :current-page="pageNum"
+          :page-size="pageSize"
+          :total="total"
+          :page-sizes="[5, 10, 15, 20]"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :current-page.sync="currentPage2"
-          :page-sizes="[5, 10, 15, 20]"
-          :page-size="pageSize"
-          layout="sizes, prev, pager, next"
-          :total="total"
-        >
-        </el-pagination>
+        ></el-pagination>
       </div>
     </el-main>
   </div>
 </template>
 
 <script>
-import {getDayHealthInfo, getHealthNumByUserId} from "../api/data"
+import { getDayHealthInfo, deleteInfoByHealthId } from "../api/data";
 export default {
   data() {
     return {
-      userId:JSON.parse(localStorage.getItem("data")).userId,
       inputStr: "",
-      value1: "",
+      userId: JSON.parse(localStorage.getItem("data")).userId,
+      pageNum: 1, //页码
+      pageSize: 5, //数量
       tableData: [],
-      addtitle: "",
-      dialogVisible: false,
-      skeleton: false,
-      currentPage2: 1, //默认第一页
-      total: 0, //总条数
-      pageSize: 5, //默认展示5条
+      total: 0,
+      value1: "",
     };
   },
   created() {
@@ -117,24 +123,109 @@ export default {
   methods: {
     // 初始化与搜索
     sarchData() {
-      getDayHealthInfo(this.userId).then(({data:res})=>{
-        if(res.code==200){
-          this.tableData=res.data;
+      if (this.value1.length != 0) {
+        var m = this.value1.toString().split(",");
+        var d1 = new Date(m[0]);
+        var d2 = new Date(m[1]);
+        var datetime1 =
+          d1.getFullYear() +
+          "-" +
+          (d1.getMonth() + 1) +
+          "-" +
+          d1.getDate() +
+          " " +
+          d1.getHours() +
+          ":" +
+          d1.getMinutes() +
+          ":" +
+          d1.getSeconds();
+        var datetime2 =
+          d2.getFullYear() +
+          "-" +
+          (d2.getMonth() + 1) +
+          "-" +
+          d2.getDate() +
+          " " +
+          d2.getHours() +
+          ":" +
+          d2.getMinutes() +
+          ":" +
+          d2.getSeconds();
+      }
+      getDayHealthInfo(
+        this.userId,
+        this.pageNum,
+        this.pageSize,
+        this.inputStr,
+        datetime1,
+        datetime2
+      ).then(({ data: res }) => {
+        if (res.code == 200) {
+          this.tableData = res.data.records;
+          this.total = res.data.total;
+          this.pageSize = res.data.size;
+          this.pageNum = res.data.current;
         }
       });
-      getHealthNumByUserId(this.userId).then(({data:res})=>{
-        this.total=res;
-      });
     },
-    refresh() {},
+    //重置
+    refresh() {
+      this.inputStr = "";
+      this.value1 = "";
+      this.pageNum = 1;
+      this.sarchData();
+    },
     // 每页条数
-    handleSizeChange(val) {
-      this.pageSize = val;
-      this.currentPage2 = 1;
+    // handleSizeChange(value) {
+    //   alert(value);
+    //   this.pageSize = value;
+    //   this.pageNum = 1;
+    //   this.sarchData();
+    // },
+    handleSizeChange(pageSize) {
+      this.pageSize = pageSize;
+      this.sarchData();
     },
-    // 当前页
-    handleCurrentChange(val) {
-      this.currentPage2 = val;
+    handleCurrentChange(pageNum) {
+      this.pageNum = pageNum;
+      this.sarchData();
+    },
+    //编辑
+    handleEdit(index, rows) {
+      alert(index + rows);
+    },
+    //删除
+    handleDelete(index, rows) {
+      // alert(rows[index].healthId);
+      // rows.splice(index, 1);
+      this.$confirm("此操作将永久删除该用户, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          deleteInfoByHealthId(rows[index].healthId).then(({ data: res }) => {
+            if (res.code == 200) {
+              rows.splice(index, 1);
+              this.$message({
+                type: "success",
+                message: "删除成功!",
+              });
+              this.sarchData();
+            } else {
+              this.$message({
+                type: "error",
+                message: "删除失败!",
+              });
+            }
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
     },
   },
 };
@@ -142,3 +233,8 @@ export default {
 
 <style scoped>
 </style>
+
+
+// var oDate1 = new Date(date1);
+//     var oDate2 = new Date(date2);
+//     if(oDate1.getTime() > oDate2.getTime())

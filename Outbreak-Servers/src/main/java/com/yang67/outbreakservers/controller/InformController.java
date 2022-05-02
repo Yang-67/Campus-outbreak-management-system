@@ -38,7 +38,12 @@ public class InformController {
         if(!StrUtil.isEmpty(informTitle)){
             queryWrapper.like("inform_title",informTitle);
         }
-//        informService.list(new QueryWrapper<Inform>().eq("class_id",classId));
         return Result.success(informMapper.selectPage(new Page<>(pageNum, pageSize), queryWrapper));
+    }
+
+    //查询面向全体学生的通知
+    @GetMapping("/getStudentInfo")
+    public Result getStudentInfo(){
+        return Result.success(informService.list(new QueryWrapper<Inform>().eq("class_id",0)));
     }
 }
