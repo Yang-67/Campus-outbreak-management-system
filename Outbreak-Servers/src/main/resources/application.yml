@@ -17,8 +17,8 @@ spring:
       max-request-size: 100MB
 
 mybatis-plus:
-  #type-aliases-package: com.example.bean
-  #mapper-locations: classpath:./com/example/mapper/*.xml
+  type-aliases-package: com.yang67.outbreakservers/entity
+  mapper-locations: classpath:com/yang67/outbreakservers/mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true
 files:

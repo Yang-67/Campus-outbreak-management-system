@@ -20,6 +20,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_id",user.getUserId());
         queryWrapper.eq("user_pwd",user.getUserPwd());
+        queryWrapper.eq("delete_flag",1);
         User one;
         try {
             one=getOne(queryWrapper);

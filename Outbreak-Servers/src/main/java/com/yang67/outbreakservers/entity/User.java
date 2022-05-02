@@ -15,11 +15,14 @@ public class User {
     private String userUrl;
     private int classId;
     private int identity;
+    private int deleteFlag;
+//    @TableField(exist = false)
+//    private String className;
 
     public User() {
     }
 
-    public User(String userId, String userName, String userPwd, int userSex, String userEmail, String userAddress, String createTime, String userUrl, int classId, int identity) {
+    public User(String userId, String userName, String userPwd, int userSex, String userEmail, String userAddress, String createTime, String userUrl, int classId, int identity, int deleteFlag) {
         this.userId = userId;
         this.userName = userName;
         this.userPwd = userPwd;
@@ -30,6 +33,7 @@ public class User {
         this.userUrl = userUrl;
         this.classId = classId;
         this.identity = identity;
+        this.deleteFlag = deleteFlag;
     }
 
     public String getUserId() {
@@ -112,10 +116,18 @@ public class User {
         this.identity = identity;
     }
 
+    public int getDeleteFlag() {
+        return deleteFlag;
+    }
+
+    public void setDeleteFlag(int deleteFlag) {
+        this.deleteFlag = deleteFlag;
+    }
+
     @Override
     public String toString() {
         return "User{" +
-                "userId=" + userId +
+                "userId='" + userId + '\'' +
                 ", userName='" + userName + '\'' +
                 ", userPwd='" + userPwd + '\'' +
                 ", userSex=" + userSex +
@@ -125,6 +137,7 @@ public class User {
                 ", userUrl='" + userUrl + '\'' +
                 ", classId=" + classId +
                 ", identity=" + identity +
+                ", deleteFlag=" + deleteFlag +
                 '}';
     }
 }

@@ -51,10 +51,10 @@
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
         <el-form-item label="学号" prop="userId">
-          <el-input v-model="ruleForm.userId"></el-input>
+          <el-input readonly v-model="ruleForm.userId"></el-input>
         </el-form-item>
         <el-form-item label="姓名" prop="userName">
-          <el-input v-model="ruleForm.userName"></el-input>
+          <el-input readonly v-model="ruleForm.userName"></el-input>
         </el-form-item>
         <el-form-item label="性别" prop="userSex">
           <el-radio-group v-model="ruleForm.userSex">
