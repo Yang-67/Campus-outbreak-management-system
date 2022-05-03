@@ -240,7 +240,7 @@ export default {
             } else {
               this.$message({
                 type: "error",
-                message: "修改失败",
+                message: "修改失败,新密码不能与原密码相同",
               });
             }
           });

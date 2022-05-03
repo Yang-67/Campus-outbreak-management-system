@@ -9,12 +9,22 @@
         </el-breadcrumb>
       </div>
       <el-divider></el-divider>
+      <Leavecard></Leavecard>
     </el-main>
   </div>
 </template>
 
 <script>
-export default {};
+import Leavecard from "@/components/leaveCard.vue"
+export default {
+  name: "leaveInfo",
+  data() {
+    return {};
+  },
+  components: {
+    Leavecard,
+  },
+};
 </script>
 
 <style scoped>

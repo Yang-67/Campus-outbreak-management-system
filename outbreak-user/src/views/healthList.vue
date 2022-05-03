@@ -68,13 +68,13 @@
         <el-table-column label="定位" prop="location"> </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button
+            <!-- <el-button
               type="primary"
               icon="el-icon-edit"
               size="small"
               @click="handleEdit(scope.$index + 1, scope.row)"
               >编辑</el-button
-            >
+            > -->
             <el-button
               size="small"
               type="danger"
@@ -176,12 +176,6 @@ export default {
       this.sarchData();
     },
     // 每页条数
-    // handleSizeChange(value) {
-    //   alert(value);
-    //   this.pageSize = value;
-    //   this.pageNum = 1;
-    //   this.sarchData();
-    // },
     handleSizeChange(pageSize) {
       this.pageSize = pageSize;
       this.sarchData();
@@ -191,20 +185,28 @@ export default {
       this.sarchData();
     },
     //编辑
-    handleEdit(index, rows) {
-      alert(index + rows);
-    },
+    // handleEdit(index, rows) {
+    //   var oDate1 = new Date();
+    //   var oDate2 = new Date(rows.createTime);
+    //   if (oDate1.getDay() === oDate2.getDay()) {
+    //     alert("可编辑");
+    //   } else {
+    //     this.$message({
+    //       type: "error",
+    //       message: "不可编辑!",
+    //     });
+    //   }
+    // },
     //删除
     handleDelete(index, rows) {
       // alert(rows[index].healthId);
-      // rows.splice(index, 1);
       this.$confirm("此操作将永久删除该用户, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       })
         .then(() => {
-          deleteInfoByHealthId(rows[index].healthId).then(({ data: res }) => {
+          deleteInfoByHealthId(rows[index]).then(({ data: res }) => {
             if (res.code == 200) {
               rows.splice(index, 1);
               this.$message({

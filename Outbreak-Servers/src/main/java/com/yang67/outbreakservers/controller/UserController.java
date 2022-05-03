@@ -107,7 +107,16 @@ public class UserController {
     //修改密码
     @GetMapping("/updUserPwd")
     public Result updUserPwd(@RequestParam(value = "userId")String userId,@RequestParam(value = "userPwd")String userPwd){
-        System.out.println(userId+","+userPwd);
-        return Result.success();
+        User user =userService.getById(userId);
+        if(user.getUserPwd().equals(userPwd)){
+            return Result.error();
+        }else{
+            user.setUserPwd(userPwd);
+            if(userService.saveOrUpdate(user)){
+                return Result.success();
+            }else {
+                return Result.error();
+            }
+        }
     }
 }

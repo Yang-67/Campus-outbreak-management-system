@@ -9,6 +9,8 @@
         </el-breadcrumb>
       </div>
       <el-divider></el-divider>
+      <el-alert title="每日以最后一次提交为准" type="success"> </el-alert>
+      <h6></h6>
       <el-form
         :model="ruleForm"
         status-icon

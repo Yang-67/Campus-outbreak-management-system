@@ -1,6 +1,7 @@
 <template>
   <el-menu
     :default-openeds="['1']"
+    :default-active="onRoutes"
     style="min-height: 100%; overflow-x: hidden"
     background-color="#334256"
     text-color="#ffffff"
@@ -95,6 +96,11 @@ export default {
     return {
       identity: JSON.parse(localStorage.getItem("data")).identity,
     };
+  },
+  computed: {
+    onRoutes() {
+      return this.$route.path.replace("/Home", "/news");
+    },
   },
   props: {
     isCollapse: Boolean,
