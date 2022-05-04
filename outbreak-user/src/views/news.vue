@@ -9,16 +9,6 @@
         </el-breadcrumb>
       </div>
       <el-divider></el-divider>
-      <!-- <template>
-        <el-alert title="成功提示的文案" type="success"> </el-alert>
-        <div style="height: 3px"></div>
-        <el-alert title="消息提示的文案" type="info"> </el-alert>
-        <div style="height: 3px"></div>
-        <el-alert title="警告提示的文案" type="warning"> </el-alert>
-        <div style="height: 3px"></div>
-        <el-alert title="错误提示的文案" type="error"> </el-alert>
-        <div style="height: 3px"></div>
-      </template> -->
       <el-card id="box-card">
         <template>
           <el-alert

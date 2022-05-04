@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 public class Inform {
     @TableId(value = "inform_id")
     private int informId;
-    private int classId;
+    private String classId;
     private String userId;
     private String informTitle;
     private String informContent;
@@ -17,7 +17,7 @@ public class Inform {
     public Inform() {
     }
 
-    public Inform(int informId, int classId, String userId, String informTitle, String informContent, String releaseTime, int deleteFlag) {
+    public Inform(int informId, String classId, String userId, String informTitle, String informContent, String releaseTime, int deleteFlag) {
         this.informId = informId;
         this.classId = classId;
         this.userId = userId;
@@ -35,11 +35,11 @@ public class Inform {
         this.informId = informId;
     }
 
-    public int getClassId() {
+    public String getClassId() {
         return classId;
     }
 
-    public void setClassId(int classId) {
+    public void setClassId(String classId) {
         this.classId = classId;
     }
 

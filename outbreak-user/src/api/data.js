@@ -115,3 +115,43 @@ export const deleteInfoByLeaveId = (param) => {
 		data: param
 	})
 }
+//老师发布通知
+export const insertInformInfoS = (param) => {
+	return axios.request({
+		url: 'http://localhost:8081/inform/insertInformInfoS',
+		method: 'post',
+		data: param
+	})
+}
+// 老师获取本班学生信息
+export const getStudentInfoS = (userId, pageNum, pageSize, inputClass, inputName) => {
+	return axios.request({
+		url: 'http://localhost:8081/user/getStudentInfoS',
+		method: 'get',
+		params: { userId: userId, pageNum: pageNum, pageSize: pageSize, inputClass: inputClass, inputName: inputName }
+	})
+}
+//老师根据学生id删除
+export const deleteUserByIdS = (param) => {
+	return axios.request({
+		url: 'http://localhost:8081/user/deleteUserByIdS',
+		method: 'post',
+		data: paramuserId
+	})
+}
+//根据老师id查负责的班级
+export const getClassesByUserId = (userId) => {
+	return axios.request({
+		url: 'http://localhost:8081/classes/getClassesByUserId',
+		method: 'get',
+		params: { userId: userId }
+	})
+}
+//老师查看学生健康信息
+export const getStuHealthInfoS = (userId, pageNum, pageSize, inputClass, inputName,datetime1,datetime2) => {
+	return axios.request({
+		url: 'http://localhost:8081/health/getStuHealthInfoS',
+		method: 'get',
+		params: { userId: userId, pageNum: pageNum, pageSize: pageSize, inputClass: inputClass, inputName: inputName,datetime1:datetime1,datetime2:datetime2 }
+	})
+}

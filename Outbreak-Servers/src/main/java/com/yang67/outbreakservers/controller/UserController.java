@@ -12,6 +12,7 @@ import com.yang67.outbreakservers.controller.entityDto.UserDto;
 import com.yang67.outbreakservers.entity.Inform;
 import com.yang67.outbreakservers.entity.User;
 import com.yang67.outbreakservers.mapper.InformMapper;
+import com.yang67.outbreakservers.mapper.UserMapper;
 import com.yang67.outbreakservers.service.InformService;
 import com.yang67.outbreakservers.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -37,11 +41,14 @@ public class UserController {
     @Resource
     private UserService userService;
 
+    @Resource
+    private UserMapper userMapper;
+
     //登录
     @PostMapping("/login")
-    public Result login(@RequestBody User user){
-        if(StrUtil.isBlank(user.getUserPwd())){
-            return Result.error(Constants.CODE_400,"参数错误");
+    public Result login(@RequestBody User user) {
+        if (StrUtil.isBlank(user.getUserPwd())) {
+            return Result.error(Constants.CODE_400, "参数错误");
         }
         UserDto userDto = userService.login(user);
         return Result.success(userDto);
@@ -49,20 +56,19 @@ public class UserController {
 
     //根据id查个人信息
     @GetMapping("/selectUserInfo")
-    public Result selectAdminInfo(@RequestParam(value = "userId") String userId){
+    public Result selectAdminInfo(@RequestParam(value = "userId") String userId) {
         return Result.success(userService.getById(userId));
     }
 
     //修改人员信息
     @PostMapping("/updUserInfo")
-    public Result updUserInfo(@RequestBody User user){
+    public Result updUserInfo(@RequestBody User user) {
         System.out.println(user.toString());
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_id",user.getUserId());
-        if(userService.update(user,queryWrapper)) {
+        queryWrapper.eq("user_id", user.getUserId());
+        if (userService.update(user, queryWrapper)) {
             return Result.success();
-        }
-        else{
+        } else {
             return Result.error();
         }
     }
@@ -78,7 +84,7 @@ public class UserController {
         File uploadFile = new File(fileUploadPath + fileUUID);
         // 判断配置的文件目录是否存在，若不存在则创建一个新的文件目录
         File parentFile = uploadFile.getParentFile();
-        if(!parentFile.exists()) {
+        if (!parentFile.exists()) {
             parentFile.mkdirs();
         }
         String url;
@@ -106,17 +112,52 @@ public class UserController {
 
     //修改密码
     @GetMapping("/updUserPwd")
-    public Result updUserPwd(@RequestParam(value = "userId")String userId,@RequestParam(value = "userPwd")String userPwd){
-        User user =userService.getById(userId);
-        if(user.getUserPwd().equals(userPwd)){
+    public Result updUserPwd(@RequestParam(value = "userId") String userId, @RequestParam(value = "userPwd") String userPwd) {
+        User user = userService.getById(userId);
+        if (user.getUserPwd().equals(userPwd)) {
             return Result.error();
-        }else{
+        } else {
             user.setUserPwd(userPwd);
-            if(userService.saveOrUpdate(user)){
+            if (userService.saveOrUpdate(user)) {
                 return Result.success();
-            }else {
+            } else {
                 return Result.error();
             }
         }
+    }
+
+    //老师获取本班学生信息
+    @GetMapping("/getStudentInfoS")
+    public Result getStudentInfoS(@RequestParam(value = "userId") String userId, @RequestParam Integer pageNum,
+                                  @RequestParam Integer pageSize, @RequestParam(defaultValue = "") String inputClass,
+                                  @RequestParam(defaultValue = "") String inputName) {
+        System.out.println(userId + "," + pageNum + "," + pageSize + "," + inputClass + "," + inputName);
+        User user = userService.getOne(new QueryWrapper<User>().eq("user_id", userId));
+        String classIds = user.getClassId();
+        List<String> typeList = new ArrayList<>();
+        if (classIds != null) {
+            String[] typeStr = classIds.split(",");
+            typeList.addAll(Arrays.asList(typeStr));
+        }
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        if(!StrUtil.isEmpty(inputName)){
+            queryWrapper.like("user_name",inputName);
+        }
+        if(!StrUtil.isEmpty(inputClass)){
+            queryWrapper.eq("class_id",inputClass);
+        }
+        queryWrapper.eq("delete_flag",1);
+        queryWrapper.in("class_id", typeList);
+        return Result.success(userMapper.selectPage(new Page<>(pageNum, pageSize), queryWrapper));
+    }
+
+    //老师根据学生id删除该学生
+    @PostMapping("/deleteUserByIdS")
+    public Result deleteUserByIdS(@RequestBody User user){
+        user.setDeleteFlag(0);
+        if(userService.saveOrUpdate(user)){
+            return Result.success();
+        }
+        return Result.error();
     }
 }

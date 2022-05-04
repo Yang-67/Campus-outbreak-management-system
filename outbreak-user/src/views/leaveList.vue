@@ -67,7 +67,7 @@
                     v-model="props.row.leaveNo"
                   ></el-input>
                 </el-form-item>
-                <el-progress :percentage="50"></el-progress>
+                <!-- <el-progress :percentage="50"></el-progress> -->
               </el-form>
             </template>
           </el-table-column>

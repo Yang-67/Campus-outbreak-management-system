@@ -8,16 +8,15 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yang67.outbreakservers.common.Result;
 import com.yang67.outbreakservers.entity.Health;
 import com.yang67.outbreakservers.entity.Inform;
+import com.yang67.outbreakservers.entity.User;
 import com.yang67.outbreakservers.mapper.HealthMapper;
 import com.yang67.outbreakservers.service.HealthService;
+import com.yang67.outbreakservers.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @CrossOrigin
@@ -30,6 +29,9 @@ public class HealthController {
     @Resource
     private HealthMapper healthMapper;
 
+    @Resource
+    private UserService userService;
+
     //学生添加每日健康信息
     @PostMapping("/insertHealthInfo")
     public Result insertHealthInfo(@RequestBody Health health) {
@@ -41,6 +43,7 @@ public class HealthController {
         String endTime = dayFormat2.format(new Date());
         QueryWrapper<Health> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_id", health.getUserId());
+        queryWrapper.eq("delete_flag",1);
         queryWrapper.between("create_time", startTime, endTime);
         List<Health> list = healthService.list(queryWrapper);
         if (list.isEmpty()) {
@@ -94,6 +97,34 @@ public class HealthController {
             return Result.success();
         }
         return Result.error();
+    }
+
+    //老师获取学生健康信息记录
+    @GetMapping("/getStuHealthInfoS")
+    public Result getStuHealthInfoS(@RequestParam(value = "userId") String userId, @RequestParam Integer pageNum,
+                                    @RequestParam Integer pageSize, @RequestParam(defaultValue = "") String inputClass,
+                                    @RequestParam(defaultValue = "") String inputName,
+                                    @RequestParam(defaultValue = "") String datetime1, @RequestParam(defaultValue = "") String datetime2){
+//        User user = userService.getOne(new QueryWrapper<User>().eq("user_id", userId));
+//        String classIds = user.getClassId();
+//        List<String> typeList = new ArrayList<>();
+//        if (classIds != null) {
+//            String[] typeStr = classIds.split(",");
+//            typeList.addAll(Arrays.asList(typeStr));
+//        }
+//        QueryWrapper<Health> queryWrapper = new QueryWrapper<>();
+//        if(StrUtil.isEmpty(inputClass)){
+//            queryWrapper.eq("class_id",inputClass);
+//        }
+//        if(StrUtil.isEmpty(inputName)){
+//            queryWrapper.like("user_id",inputName);
+//        }
+//        if (!StrUtil.isEmpty(datetime1) && !StrUtil.isEmpty(datetime2)) {
+//            queryWrapper.between("start_time", datetime1, datetime2);
+//        }
+//        queryWrapper.eq("delete_flag",1);
+//        queryWrapper.in("class_id",typeList);
+        return Result.success();
     }
 
     //图表1，疫苗

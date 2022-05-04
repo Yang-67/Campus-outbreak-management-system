@@ -30,9 +30,10 @@ public class InformController {
     @GetMapping("/getAllInformByUserId")
     public Result getClassInform(@RequestParam(value = "userId") String userId, @RequestParam Integer pageNum,
                                  @RequestParam Integer pageSize, @RequestParam(defaultValue = "") String informTitle){
-        int classId = userService.getById(userId).getClassId();
+        String classId = userService.getById(userId).getClassId();
         QueryWrapper<Inform> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("class_id",classId);
+        String classIds = classId+",";
+        queryWrapper.like("class_id",classIds);
         queryWrapper.eq("delete_flag",1);
         queryWrapper.orderByDesc("release_time");
         if(!StrUtil.isEmpty(informTitle)){
@@ -44,6 +45,18 @@ public class InformController {
     //查询面向全体学生的通知
     @GetMapping("/getStudentInfo")
     public Result getStudentInfo(){
-        return Result.success(informService.list(new QueryWrapper<Inform>().eq("class_id",0)));
+        return Result.success(informService.list(new QueryWrapper<Inform>().eq("class_id","0,")));
     }
+
+    //老师发布通知
+    @PostMapping("/insertInformInfoS")
+    public Result insertInformInfoS(@RequestBody Inform inform){
+        inform.setDeleteFlag(1);
+        if(informService.save(inform)){
+            return Result.success();
+        }
+        return Result.error();
+    }
+
+
 }

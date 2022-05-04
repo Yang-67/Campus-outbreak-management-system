@@ -13,7 +13,7 @@ public class User {
     private String userAddress;
     private String createTime;
     private String userUrl;
-    private int classId;
+    private String classId;
     private int identity;
     private int deleteFlag;
 //    @TableField(exist = false)
@@ -22,7 +22,7 @@ public class User {
     public User() {
     }
 
-    public User(String userId, String userName, String userPwd, int userSex, String userEmail, String userAddress, String createTime, String userUrl, int classId, int identity, int deleteFlag) {
+    public User(String userId, String userName, String userPwd, int userSex, String userEmail, String userAddress, String createTime, String userUrl, String classId, int identity, int deleteFlag) {
         this.userId = userId;
         this.userName = userName;
         this.userPwd = userPwd;
@@ -100,11 +100,11 @@ public class User {
         this.userUrl = userUrl;
     }
 
-    public int getClassId() {
+    public String getClassId() {
         return classId;
     }
 
-    public void setClassId(int classId) {
+    public void setClassId(String classId) {
         this.classId = classId;
     }
 
