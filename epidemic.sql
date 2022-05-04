@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50519
 File Encoding         : 65001
 
-Date: 2022-05-03 21:15:38
+Date: 2022-05-04 23:06:06
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -42,7 +42,7 @@ CREATE TABLE `health_info` (
   `route` text NOT NULL COMMENT '今日行程',
   `delete_flag` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`health_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Table structure for `inform_info`
@@ -50,14 +50,14 @@ CREATE TABLE `health_info` (
 DROP TABLE IF EXISTS `inform_info`;
 CREATE TABLE `inform_info` (
   `inform_id` int(11) NOT NULL AUTO_INCREMENT,
-  `class_id` int(11) DEFAULT NULL COMMENT '班级编号',
+  `class_id` varchar(11) DEFAULT NULL COMMENT '班级编号',
   `user_id` varchar(20) NOT NULL COMMENT '发布者',
   `inform_title` varchar(255) NOT NULL COMMENT '通知标题',
   `inform_content` text NOT NULL COMMENT '通知内容',
   `release_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '发布时间',
   `delete_flag` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`inform_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Table structure for `leave_info`
@@ -76,7 +76,7 @@ CREATE TABLE `leave_info` (
   `delete_flag` tinyint(4) NOT NULL DEFAULT '1',
   `leave_no` varchar(255) DEFAULT NULL COMMENT '审核不通过理由',
   PRIMARY KEY (`leave_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Table structure for `report_info`
@@ -107,11 +107,9 @@ CREATE TABLE `user_info` (
   `user_address` varchar(255) DEFAULT NULL COMMENT '住址',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `user_url` varchar(255) DEFAULT NULL COMMENT '头像',
-  `class_id` int(11) NOT NULL COMMENT '班级编号',
+  `class_id` varchar(11) DEFAULT NULL COMMENT '班级编号',
   `identity` tinyint(4) NOT NULL COMMENT '身份0管理1学生2教师',
   `delete_flag` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- ----------------------------
 
