@@ -23,7 +23,7 @@
         &nbsp;
         <el-input
           style="width: 300px"
-          placeholder="按姓名查找"
+          placeholder="按学号查找"
           type="text"
           v-model="inputName"
           class="input-with-select"
@@ -110,7 +110,7 @@
 </template>
 
 <script>
-import { getClassesByUserId, getStuHealthInfoS } from "../api/data";
+import { getClassesByUserId, getStuHealthInfoS, deleteInfoByHealthId } from "../api/data";
 export default {
   data() {
     return {
@@ -126,7 +126,7 @@ export default {
     };
   },
   created() {
-    // this.sarchData();
+    this.sarchData();
     getClassesByUserId(JSON.parse(localStorage.getItem("data")).userId).then(
       ({ data: res }) => {
         this.options = res.data;
@@ -197,7 +197,36 @@ export default {
       this.pageNum = pageNum;
       this.sarchData();
     },
-    handleDelete(index, rows) {},
+    handleDelete(index, rows) {
+      this.$confirm("此操作将永久删除该学生信息, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          deleteInfoByHealthId(rows[index]).then(({ data: res }) => {
+            if (res.code == 200) {
+              // rows.splice(index, 1);
+              this.$message({
+                type: "success",
+                message: "删除成功!",
+              });
+              this.sarchData();
+            } else {
+              this.$message({
+                type: "error",
+                message: "删除失败!",
+              });
+            }
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
   },
 };
 </script>

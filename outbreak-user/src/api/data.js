@@ -148,10 +148,18 @@ export const getClassesByUserId = (userId) => {
 	})
 }
 //老师查看学生健康信息
-export const getStuHealthInfoS = (userId, pageNum, pageSize, inputClass, inputName,datetime1,datetime2) => {
+export const getStuHealthInfoS = (userId, pageNum, pageSize, inputClass, inputName, datetime1, datetime2) => {
 	return axios.request({
 		url: 'http://localhost:8081/health/getStuHealthInfoS',
 		method: 'get',
-		params: { userId: userId, pageNum: pageNum, pageSize: pageSize, inputClass: inputClass, inputName: inputName,datetime1:datetime1,datetime2:datetime2 }
+		params: { userId: userId, pageNum: pageNum, pageSize: pageSize, inputClass: inputClass, inputName: inputName, datetime1: datetime1, datetime2: datetime2 }
+	})
+}
+//老师审核假条
+export const getAllLeaveInfoByS = (userId, pageNum, pageSize, inputClass, inputName) => {
+	return axios.request({
+		url: 'http://localhost:8081/leave/getAllLeaveInfoByS',
+		method: 'get',
+		params: { userId: userId, pageNum: pageNum, pageSize: pageSize, inputClass: inputClass, inputName: inputName }
 	})
 }

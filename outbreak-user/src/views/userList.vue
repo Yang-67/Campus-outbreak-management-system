@@ -160,7 +160,7 @@ export default {
     },
     //删除
     handleDelete(index, rows) {
-      // alert(rows[index].healthId);
+      // alert(rows[index]);
       this.$confirm("此操作将永久删除该学生信息, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -169,7 +169,7 @@ export default {
         .then(() => {
           deleteUserByIdS(rows[index]).then(({ data: res }) => {
             if (res.code == 200) {
-              rows.splice(index, 1);
+              // rows.splice(index, 1);
               this.$message({
                 type: "success",
                 message: "删除成功!",
