@@ -163,3 +163,11 @@ export const getAllLeaveInfoByS = (userId, pageNum, pageSize, inputClass, inputN
 		params: { userId: userId, pageNum: pageNum, pageSize: pageSize, inputClass: inputClass, inputName: inputName }
 	})
 }
+//老师查看每日提交进度members3
+export const members3 = (userId) => {
+	return axios.request({
+		url: 'http://localhost:8081/health/members3',
+		method: 'get',
+		params: { userId: userId }
+	})
+}

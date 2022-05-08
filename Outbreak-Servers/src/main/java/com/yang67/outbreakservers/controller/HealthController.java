@@ -131,8 +131,19 @@ public class HealthController {
 
     //老师查看每日健康信息提交进度
     @GetMapping("/members3")
-    public Result members3(){
-        return Result.success();
+    public Result members3(@RequestParam(value = "userId") String userId){
+        User user = userService.getOne(new QueryWrapper<User>().eq("user_id", userId));
+        String classIds = user.getClassId();
+        List<String> typeList = new ArrayList<>();
+        if (classIds != null) {
+            String[] typeStr = classIds.split(",");
+            typeList.addAll(Arrays.asList(typeStr));
+        }
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("class_id",typeList);
+        int num1 = (int) userService.count(queryWrapper);//全部人数
+
+        return Result.success(CollUtil.newArrayList(num1));
     }
 
     //图表1，疫苗
