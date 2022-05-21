@@ -11,21 +11,19 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName(value = "user_info")
-public class User implements Serializable {
-    @TableId(value = "user_id")
+@TableName(value = "leave_info")
+public class Leave implements Serializable {
+    @TableId(value = "leave_id")
+    private Integer leaveId;
     private String userId;
-    private String userName;
-    private String userPwd;
-    private int userSex;
-    private String userEmail;
-    private String userAddress;
+    private String leaveReason;
+    private String leaveType;
+    private String startTime;
+    private String endTime;
+    private int leaveState;
     private String createTime;
-    private String userUrl;
-    private String classId;
-    private int identity;
+    private int classId;
     private int deleteFlag;
-//    @TableField(exist = false)
-//    private String className;
+    private String leaveNo;
 
 }

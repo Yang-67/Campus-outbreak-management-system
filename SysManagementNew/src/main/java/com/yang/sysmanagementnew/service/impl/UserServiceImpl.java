@@ -29,14 +29,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Autowired
     private RedisCache redisCache;
+
     //登录
     @Override
     public UserDto login(User user) {
         //AuthenticationManager authenticate进行用户认证
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUserId(),user.getUserPwd());
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUserId(), user.getUserPwd());
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
         //如果认证没通过，给出对应的提示
-        if(Objects.isNull(authenticate)){
+        if (Objects.isNull(authenticate)) {
             throw new RuntimeException("登录失败");
         }
         //如果认证通过了，使用userid生成一个jwt jwt存入ResponseResult返回
@@ -44,8 +45,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         String userid = String.valueOf(loginUser.getUser().getUserId());
         String jwt = JwtUtil.createJWT(userid);
         //把完整的用户信息存入redis  userid作为key
-        redisCache.setCacheObject("login:"+userid,loginUser);
-        User user1 = getOne(new QueryWrapper<User>().eq("user_id",userid));
-        return new UserDto(userid,user1.getUserName(),user1.getUserUrl(),user1.getIdentity(),jwt);
+        redisCache.setCacheObject("login:" + userid, loginUser);
+        User user1 = getOne(new QueryWrapper<User>().eq("user_id", userid));
+        return new UserDto(userid, user1.getUserName(), user1.getUserUrl(), user1.getIdentity(), jwt);
     }
 }

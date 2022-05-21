@@ -11,21 +11,17 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName(value = "user_info")
-public class User implements Serializable {
-    @TableId(value = "user_id")
+@TableName(value = "health_info")
+public class Health implements Serializable {
+    @TableId(value = "health_id")
+    private Integer healthId;
     private String userId;
-    private String userName;
-    private String userPwd;
-    private int userSex;
-    private String userEmail;
-    private String userAddress;
+    private int healthState;
+    private int vaccineNum;
+    private float temperature;
     private String createTime;
-    private String userUrl;
-    private String classId;
-    private int identity;
+    private String location;
+    private String route;
     private int deleteFlag;
-//    @TableField(exist = false)
-//    private String className;
 
 }
