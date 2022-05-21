@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/epidemic?characterEncoding=utf-8&serverTimezone=UTC
+    username: root
+    password: 1249
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+    #文件上传
+    servlet:
+      multipart:
+        enabled: true
+        #      最大支持文件大小
+        max-file-size: 100MB
+        #      最大支持请求大小
+        max-request-size: 100MB
+mybatis-plus:
+  type-aliases-package: com.yang.sysmanagementnew.domain
+  mapper-locations: classpath*:/mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+server:
+  port: 8081
+
+files:
+  upload:
+    path: D:/sp-pr/sp_demo/files/
