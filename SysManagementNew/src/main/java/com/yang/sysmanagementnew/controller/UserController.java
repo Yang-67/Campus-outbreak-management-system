@@ -12,6 +12,7 @@ import com.yang.sysmanagementnew.domain.User;
 import com.yang.sysmanagementnew.mapper.UserMapper;
 import com.yang.sysmanagementnew.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -109,10 +110,11 @@ public class UserController {
     @GetMapping("/updUserPwd")
     public Result updUserPwd(@RequestParam(value = "userId") String userId, @RequestParam(value = "userPwd") String userPwd) {
         User user = userService.getById(userId);
-        if (user.getUserPwd().equals(userPwd)) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        if (passwordEncoder.matches(userPwd,user.getUserPwd())) {
             return Result.error();
         } else {
-            user.setUserPwd(userPwd);
+            user.setUserPwd(passwordEncoder.encode(userPwd));
             if (userService.saveOrUpdate(user)) {
                 return Result.success();
             } else {
@@ -135,22 +137,22 @@ public class UserController {
             typeList.addAll(Arrays.asList(typeStr));
         }
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        if(!StrUtil.isEmpty(inputName)){
-            queryWrapper.like("user_name",inputName);
+        if (!StrUtil.isEmpty(inputName)) {
+            queryWrapper.like("user_name", inputName);
         }
-        if(!StrUtil.isEmpty(inputClass)){
-            queryWrapper.eq("class_id",inputClass);
+        if (!StrUtil.isEmpty(inputClass)) {
+            queryWrapper.eq("class_id", inputClass);
         }
-        queryWrapper.eq("delete_flag",1);
+        queryWrapper.eq("delete_flag", 1);
         queryWrapper.in("class_id", typeList);
         return Result.success(userMapper.selectPage(new Page<>(pageNum, pageSize), queryWrapper));
     }
 
     //老师根据学生id删除该学生
     @PostMapping("/deleteUserByIdS")
-    public Result deleteUserByIdS(@RequestBody User user){
+    public Result deleteUserByIdS(@RequestBody User user) {
         user.setDeleteFlag(0);
-        if(userService.saveOrUpdate(user)){
+        if (userService.saveOrUpdate(user)) {
             return Result.success();
         }
         return Result.error();

@@ -26,9 +26,9 @@ public class ClassesController {
 
     //获取全部班级
     @GetMapping("/selectAllClasses")
-    public Result selectAllClasses(){
+    public Result selectAllClasses() {
         List<Classes> list = classesService.list();
-        if(!list.isEmpty()){
+        if (!list.isEmpty()) {
             return Result.success(list);
         }
         return Result.error();
@@ -36,7 +36,7 @@ public class ClassesController {
 
     //根据老师id查负责的班级
     @GetMapping("/getClassesByUserId")
-    public Result getClassesByUserId(@RequestParam(value = "userId")String userId){
+    public Result getClassesByUserId(@RequestParam(value = "userId") String userId) {
         User user = userService.getOne(new QueryWrapper<User>().eq("user_id", userId));
         String classIds = user.getClassId();
         List<String> typeList = new ArrayList<>();
@@ -44,6 +44,6 @@ public class ClassesController {
             String[] typeStr = classIds.split(",");
             typeList.addAll(Arrays.asList(typeStr));
         }
-        return Result.success(classesService.list(new QueryWrapper<Classes>().in("class_id",typeList)));
+        return Result.success(classesService.list(new QueryWrapper<Classes>().in("class_id", typeList)));
     }
 }

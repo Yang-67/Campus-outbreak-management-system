@@ -17,6 +17,4 @@ public class Classes implements Serializable {
     private Integer classId;
     private String className;
     private int deleteFlag;
-
-
 }

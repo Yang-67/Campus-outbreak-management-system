@@ -12,7 +12,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -21,14 +20,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     // 创建BCryptPasswordEncoder注入容器
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Autowired
     private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
     // 认证失败处理器
     @Autowired
     private AuthenticationEntryPoint authenticationEntryPoint;
+
     // Security相关配置
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -40,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 // 对于登录接口 允许匿名访问
-                .antMatchers("/user/login","/user/upload","/user/file/*").anonymous()
+                .antMatchers("/user/login", "/user/upload", "/user/file/*").anonymous()
 //                .antMatchers("/testCors").hasAuthority("system:dept:list222")
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated();

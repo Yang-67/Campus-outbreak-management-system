@@ -1,13 +1,10 @@
 package com.yang.sysmanagementnew.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yang.sysmanagementnew.config.Constants;
 import com.yang.sysmanagementnew.controller.entityDto.UserDto;
 import com.yang.sysmanagementnew.domain.LoginUser;
 import com.yang.sysmanagementnew.domain.User;
-import com.yang.sysmanagementnew.exception.ServiceException;
 import com.yang.sysmanagementnew.mapper.UserMapper;
 import com.yang.sysmanagementnew.service.UserService;
 import com.yang.sysmanagementnew.utils.JwtUtil;
@@ -18,8 +15,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 @Service

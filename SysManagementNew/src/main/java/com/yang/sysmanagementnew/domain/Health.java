@@ -23,5 +23,4 @@ public class Health implements Serializable {
     private String location;
     private String route;
     private int deleteFlag;
-
 }

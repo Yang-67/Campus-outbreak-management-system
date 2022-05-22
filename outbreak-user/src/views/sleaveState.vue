@@ -98,22 +98,32 @@
     </el-main>
     <el-dialog title="确认审核" :visible.sync="dialogVisible" width="40%">
       <el-form label-position="left" inline class="demo-table-expand">
-        <el-form-item label="审核理由">
-          <el-input
-            type="textarea"
-            readonly
-            autosize
-            v-model="leaveNo"
-          ></el-input>
-        </el-form-item>
+        <div style="width:80%; margin: 0 auto">
+          <el-form-item label="审核理由">
+            <el-input type="textarea" autosize v-model="leaveNo"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-radio v-model="radio" label="2">同意</el-radio>
+            <el-radio v-model="radio" label="1">驳回</el-radio>
+          </el-form-item>
+          </br>
+          <el-form-item>
+            <el-button type="primary" size="small" @click="submitInfoS"
+              >提交</el-button
+            ></el-form-item
+          >
+        </div>
       </el-form>
-
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { getAllLeaveInfoByS, getClassesByUserId } from "../api/data";
+import {
+  getAllLeaveInfoByS,
+  getClassesByUserId,
+  UpdStuLeaveInfo,
+} from "../api/data";
 export default {
   data() {
     return {
@@ -126,7 +136,9 @@ export default {
       total: 0,
       options: [],
       dialogVisible: false,
-      leaveNo:"",
+      leaveNo: "无",
+      ID: "", // 审批人
+      radio: "2", // 是否同意
     };
   },
   created() {
@@ -164,11 +176,22 @@ export default {
     },
     //审核
     handleEdit(index, rows) {
+      this.ID = rows.leaveId;
       this.dialogVisible = true;
-      // this.$message({
-      //   type: "success",
-      //   message: "请修改后再提交!",
-      // });
+    },
+    //审核实现
+    submitInfoS() {
+      UpdStuLeaveInfo(this.ID, this.radio, this.leaveNo).then(({ data: res }) => {
+        if (res.code == 200) {
+          this.leaveNo = "无";
+          this.dialogVisible = false;
+          this.$message({
+            type: "success",
+            message: "审批成功!",
+          });
+          this.sarchData();
+        }
+      });
     },
     //重置
     refresh() {

@@ -136,7 +136,7 @@ export const deleteUserByIdS = (param) => {
 	return axios.request({
 		url: 'http://localhost:8081/user/deleteUserByIdS',
 		method: 'post',
-		data: paramuserId
+		data: param
 	})
 }
 //根据老师id查负责的班级
@@ -155,7 +155,7 @@ export const getStuHealthInfoS = (userId, pageNum, pageSize, inputClass, inputNa
 		params: { userId: userId, pageNum: pageNum, pageSize: pageSize, inputClass: inputClass, inputName: inputName, datetime1: datetime1, datetime2: datetime2 }
 	})
 }
-//老师审核假条
+//老师审核假条记录
 export const getAllLeaveInfoByS = (userId, pageNum, pageSize, inputClass, inputName) => {
 	return axios.request({
 		url: 'http://localhost:8081/leave/getAllLeaveInfoByS',
@@ -169,5 +169,13 @@ export const members3 = (userId) => {
 		url: 'http://localhost:8081/health/members3',
 		method: 'get',
 		params: { userId: userId }
+	})
+}
+//老师审核学生假条
+export const UpdStuLeaveInfo = (leaveId, leaveState, leaveNo) => {
+	return axios.request({
+		url: 'http://localhost:8081/leave/UpdStuLeaveInfo',
+		method: 'get',
+		params: { leaveId: leaveId, leaveState:leaveState, leaveNo: leaveNo }
 	})
 }

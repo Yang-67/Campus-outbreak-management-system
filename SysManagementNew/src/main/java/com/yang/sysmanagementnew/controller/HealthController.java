@@ -44,7 +44,7 @@ public class HealthController {
         String endTime = dayFormat2.format(new Date());
         QueryWrapper<Health> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_id", health.getUserId());
-        queryWrapper.eq("delete_flag",1);
+        queryWrapper.eq("delete_flag", 1);
         queryWrapper.between("create_time", startTime, endTime);
         List<Health> list = healthService.list(queryWrapper);
         if (list.isEmpty()) {
@@ -58,7 +58,7 @@ public class HealthController {
         } else {
             //修改
             System.out.println("修改：");
-            if (healthService.saveOrUpdate(health,new QueryWrapper<Health>().eq("health_id", list.get(0).getHealthId()))) {
+            if (healthService.saveOrUpdate(health, new QueryWrapper<Health>().eq("health_id", list.get(0).getHealthId()))) {
                 return Result.success();
             } else {
                 return Result.error();
@@ -94,7 +94,7 @@ public class HealthController {
     @PostMapping("/deleteInfoByHealthId")
     public Result deleteInfoByHealthId(@RequestBody Health health) {
         health.setDeleteFlag(0);
-        if(healthService.saveOrUpdate(health)){
+        if (healthService.saveOrUpdate(health)) {
             return Result.success();
         }
         return Result.error();
@@ -105,7 +105,8 @@ public class HealthController {
     public Result getStuHealthInfoS(@RequestParam(value = "userId") String userId, @RequestParam Integer pageNum,
                                     @RequestParam Integer pageSize, @RequestParam(defaultValue = "") String inputClass,
                                     @RequestParam(defaultValue = "") String inputName,
-                                    @RequestParam(defaultValue = "") String datetime1, @RequestParam(defaultValue = "") String datetime2){
+                                    @RequestParam(defaultValue = "") String datetime1,
+                                    @RequestParam(defaultValue = "") String datetime2) {
 
         //根据id找班级id，根据classId找学生，根据userId找健康记录
         User user = userService.getOne(new QueryWrapper<User>().eq("user_id", userId));
@@ -119,20 +120,20 @@ public class HealthController {
 //        if(!StrUtil.isEmpty(inputClass)){
 //            queryWrapper.eq("class_id",inputClass);
 //        }
-        if(!StrUtil.isEmpty(inputName)){
-            queryWrapper.like("user_id",inputName);
+        if (!StrUtil.isEmpty(inputName)) {
+            queryWrapper.like("user_id", inputName);
         }
         if (!StrUtil.isEmpty(datetime1) && !StrUtil.isEmpty(datetime2)) {
             queryWrapper.between("create_time", datetime1, datetime2);
         }
-        queryWrapper.eq("delete_flag",1);
+        queryWrapper.eq("delete_flag", 1);
 //        queryWrapper.in("class_id",typeList);
         return Result.success(healthMapper.selectPage(new Page<>(pageNum, pageSize), queryWrapper));
     }
 
     //老师查看每日健康信息提交进度
     @GetMapping("/members3")
-    public Result members3(@RequestParam(value = "userId") String userId){
+    public Result members3(@RequestParam(value = "userId") String userId) {
         User user = userService.getOne(new QueryWrapper<User>().eq("user_id", userId));
         String classIds = user.getClassId();
         List<String> typeList = new ArrayList<>();
@@ -141,7 +142,7 @@ public class HealthController {
             typeList.addAll(Arrays.asList(typeStr));
         }
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.in("class_id",typeList);
+        queryWrapper.in("class_id", typeList);
         int num1 = (int) userService.count(queryWrapper);//全部人数
 
         return Result.success(CollUtil.newArrayList(num1));

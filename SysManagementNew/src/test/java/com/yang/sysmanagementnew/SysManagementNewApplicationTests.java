@@ -10,7 +10,7 @@ class SysManagementNewApplicationTests {
     @Test
     void contextLoads() {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        System.out.println(passwordEncoder.encode("123456"));
+        System.out.println(passwordEncoder.encode("1001"));
     }
 
 }

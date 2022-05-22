@@ -25,5 +25,4 @@ public class Leave implements Serializable {
     private int classId;
     private int deleteFlag;
     private String leaveNo;
-
 }

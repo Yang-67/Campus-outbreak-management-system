@@ -25,7 +25,4 @@ public class User implements Serializable {
     private String classId;
     private int identity;
     private int deleteFlag;
-//    @TableField(exist = false)
-//    private String className;
-
 }

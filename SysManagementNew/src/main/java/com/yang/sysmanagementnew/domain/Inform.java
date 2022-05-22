@@ -21,5 +21,4 @@ public class Inform implements Serializable {
     private String informContent;
     private String releaseTime;
     private int deleteFlag;
-
 }
