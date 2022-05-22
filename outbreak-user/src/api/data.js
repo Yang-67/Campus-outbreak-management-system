@@ -179,3 +179,11 @@ export const UpdStuLeaveInfo = (leaveId, leaveState, leaveNo) => {
 		params: { leaveId: leaveId, leaveState:leaveState, leaveNo: leaveNo }
 	})
 }
+// 老师查询已审批过的假条
+export const getStateLeaveInfo = (userId, pageNum, pageSize, inputClass, inputName) => {
+	return axios.request({
+		url: 'http://localhost:8081/leave/getStateLeaveInfo',
+		method: 'get',
+		params: { userId: userId, pageNum: pageNum, pageSize: pageSize, inputClass: inputClass, inputName: inputName }
+	})
+}

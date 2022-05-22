@@ -106,4 +106,36 @@ public class LeaveController {
         System.out.println("老师审核假条"+leaveId+leaveNo);
         return leaveService.UpdLeaveInfo(leaveId,leaveState,leaveNo);
     }
+
+    // 老师查看已审核过的假条
+    @GetMapping("/getStateLeaveInfo")
+    public Result getStateLeaveInfo(@RequestParam(value = "userId") String userId,
+                                     @RequestParam Integer pageNum,
+                                     @RequestParam Integer pageSize,
+                                     @RequestParam(defaultValue = "") String inputClass,
+                                     @RequestParam(defaultValue = "") String inputName) {
+        // 负责班级的id集合
+        User user = userService.getOne(new QueryWrapper<User>().eq("user_id", userId));
+        String classIds = user.getClassId();
+        List<String> typeList = new ArrayList<>();
+        if (classIds != null) {
+            String[] typeStr = classIds.split(",");
+            typeList.addAll(Arrays.asList(typeStr));
+        }
+        QueryWrapper<Leave> queryWrapper = new QueryWrapper<>();
+        if (!StrUtil.isEmpty(inputClass)) {
+            queryWrapper.eq("class_id", inputClass);
+        }
+        if (!StrUtil.isEmpty(inputName)) {
+            queryWrapper.like("user_id", inputName);
+        }
+        queryWrapper.in("class_id", typeList);
+        queryWrapper.eq("delete_flag", 1);
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        queryWrapper.in("leave_state",list);
+        queryWrapper.orderByDesc("create_time");
+        return Result.success(leaveMapper.selectPage(new Page<>(pageNum, pageSize), queryWrapper));
+    }
 }

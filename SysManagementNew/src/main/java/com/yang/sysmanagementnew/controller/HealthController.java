@@ -145,6 +145,10 @@ public class HealthController {
         queryWrapper.in("class_id", typeList);
         int num1 = (int) userService.count(queryWrapper);//全部人数
 
+        //查询班级人员ID
+        assert classIds != null;
+        List<String> list = healthMapper.selectUser(classIds.substring(0,classIds.length()-1));
+        System.out.println(list.toString());
         return Result.success(CollUtil.newArrayList(num1));
     }
 
